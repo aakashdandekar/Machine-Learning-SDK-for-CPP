@@ -1,18 +1,9 @@
 add_rules("mode.debug", "mode.release")
 
-add_requires("pybind11")
-
 target("ModelTraining_SDK")
     set_kind("binary")
     add_files("src/main.cpp")
     add_includedirs("src")
-    set_languages("c++17")
-
-target("ModelTraining")
-    add_rules("python.module")
-    add_files("src/bindings.cpp")
-    add_includedirs("src")
-    add_packages("pybind11")
     set_languages("c++17")
 
 --
