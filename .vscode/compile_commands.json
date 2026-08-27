@@ -1,6 +1,0 @@
-[
-{
-  "directory": "/home/aakashdandekar/Projects/ModelTraining_SDK",
-  "arguments": ["/usr/bin/g++", "-c", "-m64", "-fvisibility=hidden", "-fvisibility-inlines-hidden", "-O3", "-std=c++17", "-Isrc", "-DNDEBUG", "-o", "build/.objs/ModelTraining_SDK/linux/x86_64/release/src/main.cpp.o", "src/main.cpp"],
-  "file": "src/main.cpp"
-}]
