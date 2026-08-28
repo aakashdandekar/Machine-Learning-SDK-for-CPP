@@ -17,7 +17,7 @@ class LinearRegression {
         vector<double> loss_history;
 
     public:
-        LinearRegression(double lr = 0.01,  long long n_iters = 1000, double lambda_ = 0.1) {
+        LinearRegression(double lr = 0.0001,  long long n_iters = 10000, double lambda_ = 0.01) {
             this->lr = lr;
             this->n_iters = n_iters;
             this->lambda_ = lambda_;
@@ -42,29 +42,32 @@ class LinearRegression {
                 // Gradient Descent
 
                 vector<vector<double>> transpose_X = transposeMatrix(X);
-                vector<double> dw = multiplyDoubleVector(multiplyMatrixVector(transpose_X, error), toDouble(1 / n_samples));
-                double db = toDouble(1 / n_samples) * sum(error);
+                vector<double> dw = multiplyDoubleVector(multiplyMatrixVector(transpose_X, error), 1.0 / n_samples);
+                double db = (1.0 / n_samples) * sum(error);
 
-                for (size_t i = 0; i < this->weight.size(); i++) {
-                    this->weight[i] -= this->lr * dw[i];
+                for (size_t j = 0; j < this->weight.size(); j++) {
+                    this->weight[j] -= this->lr * dw[j];
                 }
 
                 this->bias -= this->lr * db;
 
-                double mse = toDouble(sum(nPowerVector(error, 2)) / error.size());
-                double penalty = toDouble(this->lambda_ * sum(nPowerVector(this->weight, 2)));
+                double mse = sum(nPowerVector(error, 2)) / error.size();
+                double penalty = this->lambda_ * sum(nPowerVector(this->weight, 2));
                 this->loss_history.push_back(mse + penalty);
             }
         }
 
-        vector<double> predict(const vector<vector<double>>& X) {
-            return addDoubleVector(multiplyMatrixVector(X, this->weight), this->bias);
+        vector<double> predict(const vector<vector<DataType>>& X) {
+            vector<vector<double>> x = serializeMatrix(X);
+            return addDoubleVector(multiplyMatrixVector(x, this->weight), this->bias);
         }
 
-        double score(const vector<vector<double>>& X, const vector<double>& y) {
+        double score(const vector<vector<DataType>>& X, const vector<DataType>& Y) {
+            vector<double> y = serializeVector(Y);
+
             vector<double> y_pred = this->predict(X);
             double ss_res = sum(nPowerVector(subtractVectors(y, y_pred), 2));
-            double ss_tot = sum(nPowerVector(subtractDoubleVector(y, toDouble(sum(y)/y.size())), 2));
+            double ss_tot = sum(nPowerVector(subtractDoubleVector(y, sum(y)/y.size()), 2));
 
             return 1 - (ss_res / ss_tot);
         }

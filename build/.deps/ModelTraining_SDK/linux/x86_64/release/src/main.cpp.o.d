@@ -1,4 +1,7 @@
 {
+    files = {
+        "src/main.cpp"
+    },
     values = {
         "/usr/bin/g++",
         {
@@ -12,9 +15,6 @@
         }
     },
     depfiles_format = "gcc",
-    files = {
-        "src/main.cpp"
-    },
-    depfiles = "main.o: src/main.cpp  src/ClassicalMachineLearningModels/linear_regression.hpp  src/ClassicalMachineLearningModels/helpers/helpers.hpp  src/ClassicalMachineLearningModels/helpers/../../datatypes.hpp  src/ClassicalMachineLearningModels/../datatypes.hpp\
+    depfiles = "main.o: src/main.cpp src/file_ops.hpp src/datatypes.hpp  src/ClassicalMachineLearningModels/linear_regression.hpp  src/ClassicalMachineLearningModels/helpers/helpers.hpp  src/ClassicalMachineLearningModels/helpers/../../datatypes.hpp  src/ClassicalMachineLearningModels/../datatypes.hpp\
 "
 }

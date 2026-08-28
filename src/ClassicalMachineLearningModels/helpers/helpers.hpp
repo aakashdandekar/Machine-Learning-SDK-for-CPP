@@ -1,5 +1,9 @@
 #include<iostream>
 #include<vector>
+#include<string>
+#include<cmath>
+#include<type_traits>
+#include<stdexcept>
 using namespace std;
 
 #include "../../datatypes.hpp"
@@ -10,8 +14,13 @@ bool validateDataType(U& value) {
 }
 
 double toDouble(const DataType& value) {
-    return visit([](auto v) {
-        return static_cast<double>(v);
+    return visit([](auto&& v) -> double {
+        using T = decay_t<decltype(v)>;
+        if constexpr (is_same_v<T, string>) {
+            return stod(v);
+        } else {
+            return static_cast<double>(v);
+        }
     }, value);
 }
 
@@ -53,14 +62,12 @@ double sum(const vector<double>& vec) {
     return result;
 }
 
-vector<double> nPowerVector(const vector<double>& vec, const int& n = 2) {
+vector<double> nPowerVector(const vector<double>& vec, int power = 2) {
     if (vec.empty()) return {};
 
     vector<double> result(vec.size(), 0.0);
     for (size_t i = 0; i < vec.size(); i++) {
-        for (int n = 0; i < n; i++) {
-            result[i] += vec[i];
-        }
+        result[i] = pow(vec[i], power);
     }
 
     return result;
@@ -117,8 +124,8 @@ double multiplyVectors(const vector<double>& vec1, const vector<double>& vec2) {
     }
 
     double result = 0.0;
-    for (int i = 0; i < vec2.size(); i++) {
-        result += (toDouble(vec1[i]) * toDouble(vec2[i]));
+    for (size_t i = 0; i < vec2.size(); i++) {
+        result += (vec1[i] * vec2[i]);
     }
 
     return result;
@@ -145,7 +152,7 @@ vector<double> multiplyMatrixVector(const vector<vector<double>>& mat, const vec
 }
 
 vector<vector<double>> transposeMatrix(const vector<vector<double>>& matrix) {
-    if (matrix.empty()) return {{}};
+    if (matrix.empty() || matrix[0].empty()) return {};
 
     vector<vector<double>> result(matrix[0].size(), vector<double>(matrix.size(), 0.0));
     for(size_t i = 0; i < matrix.size(); i++) {

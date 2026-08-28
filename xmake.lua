@@ -5,6 +5,7 @@ target("ModelTraining_SDK")
     add_files("src/main.cpp")
     add_includedirs("src")
     set_languages("c++17")
+    set_rundir("$(projectdir)")
 
 --
 -- If you want to known more usage about xmake, please see https://xmake.io
